@@ -2,3 +2,5 @@ when a file is being downloaded from the browser:
     1- a temp file get created while the user chosing the name and where the file should be downloaded
     2- the temp file getting modifed with the neccary data 
     3- if the downloading successed the temp file get moved the target named filed
+
+[TASK] : add a function that list all old files and classify them according to there extantion
