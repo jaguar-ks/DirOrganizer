@@ -1,6 +1,6 @@
 import os
 import time
-from watchdog.observers import Observer
+from watchdog.observers.polling import PollingObserver
 from watchdog.events import FileSystemEventHandler
 
 
@@ -20,30 +20,33 @@ class DirOrganizer:
     watch_dir = "/mnt/c/Users/ramo/Downloads"
 
     def __init__(self):
-        self.observer = Observer()
+        self.observer = PollingObserver()
     
     def run(self):
         organization_handler = DirOrganizerHandler()
         self.observer.schedule(
             organization_handler,
             path=self.watch_dir,
-            recursive=False
+            recursive=True
         )
         self.observer.start()
         try:
             while True:
-                time.slep(2)
-        except:
+                time.sleep(2)
+        except Exception as e:
+            print(f"Error: {e}")
             self.observer.stop()
         
         self.observer.join()
 
 class DirOrganizerHandler(FileSystemEventHandler):
-    def on_created(self, event):
-        print(f"Created: [{event.src_path}]")
-        print('_'*30, event.__doc__, sep='\n')
+    @staticmethod
+    def on_any_event(event):
+        if not event.is_directory:
+            print(f"EVENT ACCURED: {event.event_type} [{event.src_path.split('/')[-1]}] -> [{event.dest_path.split('/')[-1]}]")
 
 
 if __name__ == '__main__':
     organizer = DirOrganizer()
+    print(organizer.watch_dir)
     organizer.run()
