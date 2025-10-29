@@ -47,10 +47,10 @@ class DirOrganizer:
     def classify_and_move(cls, file_path: str):
         if not os.path.isdir(file_path):
             file_name = os.path.basename(file_path)
-            _, extantion = os.path.splitext(file_name)
+            _, extansion = os.path.splitext(file_name)
             destination_dir = 'Others'
-            for directory, extantions in FILE_CATEGORIES.items():
-                if extantion in extantions:
+            for directory, extansions in FILE_CATEGORIES.items():
+                if extansion in extansions:
                     destination_dir = directory
                     break
             destination_dir = os.path.join(cls.watch_dir, destination_dir)
@@ -68,12 +68,14 @@ class DirOrganizerHandler(FileSystemEventHandler):
     def on_any_event(event):
         if not event.is_directory and event.event_type == 'moved':
             src_path = os.path.basename(event.src_path).lower()
-            _, src_extation = os.path.splitext(src_path)
-            if src_extation in FILE_CATEGORIES["Temp"]:
+            _, src_extansion = os.path.splitext(src_path)
+            if src_extansion in FILE_CATEGORIES["Temp"]:
                 DirOrganizer.classify_and_move(event.dest_path)
-
 
 if __name__ == '__main__':
     organizer = DirOrganizer()
-    print(organizer.watch_dir)
+    for file in os.listdir(organizer.watch_dir):
+        file_path = os.path.join(organizer.watch_dir, file)
+        DirOrganizer.classify_and_move(file_path)
+    print("\n✅ Organization complete!")
     organizer.run()
