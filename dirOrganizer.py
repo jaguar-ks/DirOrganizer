@@ -45,7 +45,7 @@ class DirOrganizer:
     that computes the destination category and moves files.
     """
 
-    watch_dir = "/mnt/c/Users/ramo/Downloads"
+    watch_dir = "/Downloads"   # Change this path
 
     def __init__(self):
         """Create the observer and handler instances.
