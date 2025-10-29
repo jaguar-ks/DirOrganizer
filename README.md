@@ -2,13 +2,9 @@
 
 A lightweight Python utility that automatically organizes files in your Downloads folder (or any directory) by categorizing them into subfolders based on file type.
 
-## Overview
+## Overview & Key Features
 
 DirOrganizer watches a specified directory and automatically moves incoming files into category-specific subfolders. It uses a polling observer from the `watchdog` library, making it compatible with all filesystems including those that don't support native file system events.
-
----
-
-## Key Features
 
 - ✅ **Automatic File Organization** - Categorizes files based on their extensions
 - ✅ **Real-time Monitoring** - Watches for incoming files and organizes them on-the-fly
