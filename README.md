@@ -6,7 +6,9 @@ A lightweight Python utility that automatically organizes files in your Download
 
 DirOrganizer watches a specified directory and automatically moves incoming files into category-specific subfolders. It uses a polling observer from the `watchdog` library, making it compatible with all filesystems including those that don't support native file system events.
 
-### Key Features
+---
+
+## Key Features
 
 - ✅ **Automatic File Organization** - Categorizes files based on their extensions
 - ✅ **Real-time Monitoring** - Watches for incoming files and organizes them on-the-fly
@@ -14,6 +16,21 @@ DirOrganizer watches a specified directory and automatically moves incoming file
 - ✅ **Cross-platform Compatible** - Works on Windows, macOS, and Linux
 - ✅ **Robust Polling** - Uses PollingObserver for maximum filesystem compatibility
 - ✅ **Customizable Categories** - Easy to modify file categories and extensions
+
+---
+
+## Table of Contents
+
+| Section | Description |
+|---------|-------------|
+| [File Categories](#file-categories) | Supported file types and organization |
+| [Installation](#installation) | Setup and requirements |
+| [Usage](#usage) | How to run the organizer |
+| [Project Structure](#project-structure) | Directory layout |
+| [Configuration](#configuration) | Customization options |
+| [How It Works](#how-it-works) | Technical overview |
+| [Troubleshooting](#troubleshooting) | Common issues and solutions |
+| [Future Enhancements](#possible-improvements-for-future-versions) | Planned improvements |
 
 ## File Categories
 
@@ -32,6 +49,8 @@ Files are automatically organized into the following categories based on their e
 | **Others** | Any unrecognized extension |
 
 > **Note:** The default watch directory is set to `/Downloads`. Modify the `watch_dir` class variable in `DirOrganizer` to change this.
+
+---
 
 ## Installation
 
@@ -84,6 +103,49 @@ MOVED: [/Downloads/image.png] => [/Downloads/Images/image.png]
 MOVED: [/Downloads/archive.zip] => [/Downloads/Archives/archive.zip]
 ✅ Organization complete!
 ```
+
+### Directory Structure: Before and After
+
+#### Before Running the Script
+
+```text
+Downloads/
+├── document.pdf
+├── image.png
+├── archive.zip
+├── video.mp4
+├── song.mp3
+├── presentation.pptx
+├── installer.exe
+├── script.py
+├── report.txt
+└── game.rar
+```
+
+#### After Running the Script
+
+```text
+Downloads/
+├── Documents/
+│   ├── document.pdf
+│   ├── presentation.pptx
+│   └── report.txt
+├── Images/
+│   └── image.png
+├── Archives/
+│   ├── archive.zip
+│   └── game.rar
+├── Videos/
+│   └── video.mp4
+├── Audio/
+│   └── song.mp3
+├── Setup/
+│   └── installer.exe
+└── Code/
+    └── script.py
+```
+
+All files are automatically categorized and moved into their respective folders, keeping your Downloads directory clean and organized! ✨
 
 ## Project Structure
 
