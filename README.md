@@ -149,7 +149,7 @@ All files are automatically categorized and moved into their respective folders,
 DirOrganizer/
 ├── dirOrganizer.py       # Main application file
 ├── requirements.txt      # Python dependencies
-└── README.md            # This file
+└── README.md            
 ```
 
 ## Configuration
