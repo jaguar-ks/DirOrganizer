@@ -76,7 +76,7 @@ class DirOrganizer:
                 time.sleep(2)
 
         except KeyboardInterrupt:
-            print(f"✅ Script completed!...")
+            print("✅ Script completed!...")
             self.observer.stop()
         except Exception as e:
             print(f"Error: {e}")
