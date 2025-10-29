@@ -74,9 +74,12 @@ class DirOrganizer:
         try:
             while True:
                 time.sleep(2)
+
+        except KeyboardInterrupt:
+            print(f"✅ Script completed!...")
+            self.observer.stop()
         except Exception as e:
             print(f"Error: {e}")
-            self.observer.stop()
         self.observer.join()
 
     @classmethod
@@ -148,5 +151,5 @@ if __name__ == '__main__':
     for file in os.listdir(organizer.watch_dir):
         file_path = os.path.join(organizer.watch_dir, file)
         DirOrganizer.classify_and_move(file_path)
-    print("\n✅ Organization complete!")
+    print("✅ Organization complete!")
     organizer.run()
