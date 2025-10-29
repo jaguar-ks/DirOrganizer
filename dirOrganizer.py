@@ -1,13 +1,16 @@
 import os
 import time
+import shutil
 from watchdog.observers.polling import PollingObserver
 from watchdog.events import FileSystemEventHandler
 
 
 # ----------------- CONFIGURATION -----------------
 FILE_CATEGORIES = {
-    "Images": (".jpg", ".jpeg", ".png", ".gif", ".webp", ".tiff", ".svg", ".ico"),
-    "Documents": (".pdf", ".doc", ".docx", ".txt", ".xls", ".xlsx", ".ppt", ".pptx", ".odt", ".rtf"),
+    "Images": (".jpg", ".jpeg", ".png", ".gif", ".webp", ".tiff", ".svg",
+               ".ico"),
+    "Documents": (".pdf", ".doc", ".docx", ".txt", ".xls", ".xlsx", ".ppt",
+                  ".pptx", ".odt", ".rtf"),
     "Archives": (".zip", ".rar", ".7z", ".tar", ".gz"),
     "Videos": (".mp4", ".mov", ".avi", ".mkv", ".webm"),
     "Audio": (".mp3", ".wav", ".flac", ".aac"),
@@ -17,16 +20,17 @@ FILE_CATEGORIES = {
 }
 # -------------------------------------------------
 
+
 class DirOrganizer:
     watch_dir = "/mnt/c/Users/ramo/Downloads"
 
     def __init__(self):
         self.observer = PollingObserver()
-    
+        self.organization_handler = DirOrganizerHandler()
+
     def run(self):
-        organization_handler = DirOrganizerHandler()
         self.observer.schedule(
-            organization_handler,
+            self.organization_handler,
             path=self.watch_dir,
             recursive=True
         )
@@ -37,18 +41,36 @@ class DirOrganizer:
         except Exception as e:
             print(f"Error: {e}")
             self.observer.stop()
-        
         self.observer.join()
+
+    @classmethod
+    def classify_and_move(cls, file_path: str):
+        if not os.path.isdir(file_path):
+            file_name = os.path.basename(file_path)
+            _, extantion = os.path.splitext(file_name)
+            destination_dir = 'Others'
+            for directory, extantions in FILE_CATEGORIES.items():
+                if extantion in extantions:
+                    destination_dir = directory
+                    break
+            destination_dir = os.path.join(cls.watch_dir, destination_dir)
+            file_final_dest = os.path.join(destination_dir, file_name)
+            try:
+                os.makedirs(destination_dir, exist_ok=True)
+                shutil.move(file_path, file_final_dest)
+                print(f"MOVED: [{file_path}] => [{file_final_dest}]")
+            except Exception as e:
+                print(f"ERROR [Failed to move file]: {e}")
+
 
 class DirOrganizerHandler(FileSystemEventHandler):
     @staticmethod
     def on_any_event(event):
         if not event.is_directory and event.event_type == 'moved':
             src_path = os.path.basename(event.src_path).lower()
-            dest_path = os.path.basename(event.dest_path).lower()
-            if src_path.endswith(FILE_CATEGORIES["Temp"]):
-                print(f"File Dowloaded: [{dest_path}] is downloaded successfuly")
-            # print(f"EVENT ACCURED: {event.event_type} [{event.src_path.split('/')[-1]}] -> [{event.dest_path.split('/')[-1]}]")
+            _, src_extation = os.path.splitext(src_path)
+            if src_extation in FILE_CATEGORIES["Temp"]:
+                DirOrganizer.classify_and_move(event.dest_path)
 
 
 if __name__ == '__main__':
